@@ -1,14 +1,18 @@
 package com.operativos.teletica;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class News{
 
     private String id;
-    private String headline;
+    private String headline;//no lo voy a necesitar
     private String text;
     private String news_url;
+    private List<String> keyWordsList;
 
     public News() {
-        super();
+        super(); 
     }
 
     public News(String headline){
@@ -16,25 +20,34 @@ public class News{
         this.headline = headline;
     }
 
-    public News(String id, String headline){
+    public News(String id, String text){
         super();
         this.id = id;
-        this.headline = headline;
+        this.text = text;
     }
 
-    public News(String id, String headline, String text){
+    public News(String id, String text, ArrayList<String> keyWordsList){
+        super();
+        this.id = id;
+        this.text = text;
+        this.keyWordsList = keyWordsList;
+    }
+
+    public News(String id, String text, String headline, ArrayList<String> keyWordsList){
         super();
         this.id = id;
         this.headline = headline;
         this.text = text;
+        this.keyWordsList = keyWordsList;
     }
 
-    public News(String id, String headline, String text, String news_url) {
+    public News(String id, String headline, String text, String news_url, ArrayList<String> keyWordsList) {
         super();
         this.id = id;
         this.headline = headline;
         this.text = text;
         this.news_url = news_url;
+        this.keyWordsList = keyWordsList;
     }
 
     public String getId() {
@@ -67,6 +80,14 @@ public class News{
 
     public void setNews_url(String news_url) {
         this.news_url = news_url;
+    }
+
+    public List<String> getKeyWordsList() {
+        return keyWordsList;
+    }
+
+    public void setKeyWordsList(List<String> keyWordsList) {
+        this.keyWordsList = keyWordsList;
     }
 
 }
