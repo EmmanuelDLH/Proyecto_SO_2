@@ -3,14 +3,19 @@ package com.operativos.teletica;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import com.operativos.teletica.sqliteConnect.connectSqlite;
 
 //esta clase recibe el texto que se obtine mediante web scrapping y extrae las palabras clave que se asemejan a las de la DB
 public class puller{
 
-    public static int nroVecesR(String frase,String palabra){
+    //todas las keyWords que aparescan dentro del texto que sean las de la DB retornelas para llamar al metodo en el consumer
+    public Dictionary<String, Integer> similarKeys = new Hashtable<String, Integer>();
+    //["Events" : 10, "Health" : 5, "Politics" : 9]
+
+    public static int nroVecesR(String frase,String palabra){ //devulve la repeticion de una sola palabra 
         int pos = 0;
         pos = frase.indexOf(palabra);
         
@@ -21,11 +26,8 @@ public class puller{
             return 0;
     }
 
-    public static ArrayList<String> puller_method(String newsText) {
-
-        //todas las keyWords que aparescan dentro del texto que sean las de la DB retornelas para llamar al metodo en el consumer
-        ArrayList<String> similarKeys = new ArrayList<String>();
-
+    public static int puller_methodEvents(String newsText) {
+        int totalCount = 0;
         Connection c = null;
         Statement stmt = null;
         
@@ -37,32 +39,83 @@ public class puller{
             ResultSet rs = stmt.executeQuery( "SELECT * FROM Events;" );
             
             while ( rs.next() ) {
-                new Thread("" + rs.getFetchSize()){
-                    public void run(){
-                        int id = rs.getInt("ID");
-                        String  word = rs.getString("Word");
-                        //System.out.println("Thread: " + getName() + " running");
+                //int id = rs.getInt("ID");
+                String  word = rs.getString("Word");
 
-                        
-
-                        //newsText = sTexto.substring(sTexto.indexOf(sTextoBuscado)+sTextoBuscado.length(),sTexto.length());
-                    }
-                  }.start();
+                totalCount += nroVecesR(newsText, word);
                 
-                /*System.out.println( "ID = " + id );
-                System.out.println( "WORD = " + word );*/
-
-
             }
             rs.close();
             stmt.close();
             c.close();
+
+            return totalCount;
             
         } catch (Exception e) {
             //TODO: handle exception
+            return totalCount = 0;
         }
-        
+    }
 
-        return similarKeys;
+    public static int puller_methodHealth(String newsText) {
+        int totalCount = 0;
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+
+            c = connectSqlite.connect();
+
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Health;" );
+            
+            while ( rs.next() ) {
+                //int id = rs.getInt("ID");
+                String  word = rs.getString("Word");
+
+                totalCount += nroVecesR(newsText, word);
+                
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+
+            return totalCount;
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+            return totalCount = 0;
+        }
+    }
+
+    public static int puller_methodPolitics(String newsText) {
+        int totalCount = 0;
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+
+            c = connectSqlite.connect();
+
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Politics;" );
+            
+            while ( rs.next() ) {
+                //int id = rs.getInt("ID");
+                String  word = rs.getString("Word");
+
+                totalCount += nroVecesR(newsText, word);
+                
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+
+            return totalCount;
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+            return totalCount = 0;
+        }
     }
 }
