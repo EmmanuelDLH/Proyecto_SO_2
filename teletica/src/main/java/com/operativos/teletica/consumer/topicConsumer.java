@@ -62,7 +62,7 @@ public class topicConsumer {
 
                         String jsonVar = new Gson().toJson(new News(ID, textExtract, keyList));
                         template.send("myTopic", jsonVar);//article_text
-                        
+
                     } catch (Exception e) {
                         //TODO: handle exception
 
