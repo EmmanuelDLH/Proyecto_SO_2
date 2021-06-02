@@ -26,46 +26,37 @@ public class puller{
             return 0;
     }
 
-    public static int puller_methodEvents(String newsText) {
+    public static int puller_methodEvents(String newsText, Connection c) {
         int totalCount = 0;
-        Connection c = null;
         Statement stmt = null;
-        
-        try {
 
-            c = connectSqlite.connect();
+        try {
 
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM Events;" );
             
             while ( rs.next() ) {
-                //int id = rs.getInt("ID");
                 String  word = rs.getString("Word");
-
                 totalCount += nroVecesR(newsText, word);
                 
             }
             rs.close();
             stmt.close();
-            c.close();
 
             return totalCount;
             
         } catch (Exception e) {
             //TODO: handle exception
+            System.err.println("Error del puller_methodEvents: " + e);
             return totalCount = 0;
         }
     }
 
-    public static int puller_methodHealth(String newsText) {
+    public static int puller_methodHealth(String newsText, Connection c) {
         int totalCount = 0;
-        Connection c = null;
         Statement stmt = null;
         
         try {
-
-            c = connectSqlite.connect();
-
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM Health;" );
             
@@ -78,19 +69,18 @@ public class puller{
             }
             rs.close();
             stmt.close();
-            c.close();
 
             return totalCount;
             
         } catch (Exception e) {
             //TODO: handle exception
+            System.err.println("Error del puller_methodHealth: " + e);
             return totalCount = 0;
         }
     }
 
-    public static int puller_methodPolitics(String newsText) {
+    public static int puller_methodPolitics(String newsText, Connection c) {
         int totalCount = 0;
-        Connection c = null;
         Statement stmt = null;
         
         try {
@@ -109,12 +99,12 @@ public class puller{
             }
             rs.close();
             stmt.close();
-            c.close();
 
             return totalCount;
             
         } catch (Exception e) {
             //TODO: handle exception
+            System.err.println("Error del puller_methodPolitics: " + e);
             return totalCount = 0;
         }
     }

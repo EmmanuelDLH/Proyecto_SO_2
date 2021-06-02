@@ -1,14 +1,17 @@
 package com.operativos.teletica.consumer;
 
+import org.jsoup.select.Elements;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.html.HTMLCollection;
 
 import com.operativos.teletica.News;
 import com.operativos.teletica.NewsUtil;
 import com.operativos.teletica.puller;
+import com.operativos.teletica.sqliteConnect.connectSqlite;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -40,59 +43,73 @@ public class topicConsumer {
         //String HEADLINE = jsonObject.get("headline").getAsString();
 
         if (NewsUtil.getHtmlDocument(URL).getElementById("content") == null){ //para cuando la pagina es incorrecta
-            template.send("myTopic", new Gson().toJson(new News(ID,"There is no info")));//There is no info o String vacio
+            keyList.put("Events", eventsCountFinal);
+            keyList.put("Health", healthCountFinal);
+            keyList.put("Politics", politicsCountFinal);
+            template.send("myTopic", new Gson().toJson(new News(ID, keyList)));//There is no info o String vacio
         }
         else{
             if(NewsUtil.getHtmlDocument(URL).getElementById("content").getElementsByClass("text-editor").isEmpty()){ //para cuando no encunetra la noticia
-                template.send("myTopic", new Gson().toJson(new News(ID,"There is no info")));//There is no info o String vacio
-            }
-            else{
-                //con esto podemos ver cuantos parrafos podemos usar
-                HTMLCollection paragraphs = (HTMLCollection) NewsUtil.getHtmlDocument(URL).getElementById("content").getElementsByClass("text-editor").get(0).getElementsByTag("p");
-                int tamano = paragraphs.getLength();
-
-                for (int i = 0; i < tamano; i++) {
-                    try {
-                        String textExtract = paragraphs.item(i).getTextContent();
-
-                        //Threads para ejecutar el parrafo con los tres metodos de cada tabla
-                        
-                        //Thread eventsThread
-                        new Thread(){
-                            public void run(){
-                              //System.out.println("Thread Running");
-                                eventsCountFinal += puller.puller_methodEvents(textExtract);
-                            }
-                        }.start();
-                
-                        //Thread healthThread
-                        new Thread(){
-                            public void run(){
-                              //System.out.println("Thread Running");
-                              healthCountFinal += puller.puller_methodHealth(textExtract);
-                            }
-                        }.start();
-                
-                        //Thread politicsThread
-                        new Thread(){
-                            public void run(){
-                              //System.out.println("Thread Running");
-                              politicsCountFinal += puller.puller_methodPolitics(textExtract);
-                            }
-                        }.start();
-
-                    } catch (Exception e) {
-                        //TODO: handle exception
-
-                    }
-                }
-
                 keyList.put("Events", eventsCountFinal);
                 keyList.put("Health", healthCountFinal);
                 keyList.put("Politics", politicsCountFinal);
+                template.send("myTopic", new Gson().toJson(new News(ID, keyList)));//There is no info o String vacio
+            }
+            else{
+                //con esto podemos ver cuantos parrafos podemos usar
+                Elements paragraphs = NewsUtil.getHtmlDocument(URL).getElementById("content").getElementsByClass("text-editor").get(0).getElementsByTag("p");
+                int tamano = paragraphs.size();
+                System.out.println(tamano);
 
-                String jsonVar = new Gson().toJson(new News(ID, keyList));
-                template.send("myTopic", jsonVar);//article_text
+                for (int i = 0; i < tamano; i++) {
+                    Connection c = null;
+                    
+                    try {
+                        String textExtract = paragraphs.get(i).ownText();
+                        //System.out.println(textExtract);
+                        c = connectSqlite.connect();
+                        //Threads para ejecutar el parrafo con los tres metodos de cada tabla
+                        
+                        //Thread eventsThread
+                        
+                            eventsCountFinal += puller.puller_methodEvents(textExtract, c);
+
+                        //Thread healthThread
+                        
+                            healthCountFinal += puller.puller_methodHealth(textExtract, c);
+
+                        //Thread politicsThread
+                        
+                            politicsCountFinal += puller.puller_methodPolitics(textExtract, c);
+
+
+                    } catch (Exception e) {
+                        //TODO: handle exception
+                        System.err.println(e.getMessage());
+                    }
+                    finally {
+                        try {
+                            if (c != null) {
+                                c.close();
+                            }
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    }
+                }
+
+                try {
+
+                    keyList.put("Events", eventsCountFinal);
+                    keyList.put("Health", healthCountFinal);
+                    keyList.put("Politics", politicsCountFinal);
+
+                    template.send("myTopic", new Gson().toJson(new News(ID, keyList)));//article_text
+
+                } catch (Exception e) {
+                    //TODO: handle exception
+                    System.err.println("excepcion a la hora de cargar el json final");
+                }
             }
         }
     }

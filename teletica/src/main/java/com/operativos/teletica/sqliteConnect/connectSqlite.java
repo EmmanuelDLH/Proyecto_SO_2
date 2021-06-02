@@ -10,7 +10,7 @@ public class connectSqlite {
         Connection conn = null;
         try {
             // db parameters
-            String url = "jdbc:sqlite:../Proyecto_SO_2/keyWords.db";
+            String url = "jdbc:sqlite:keyWords.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             
@@ -22,14 +22,6 @@ public class connectSqlite {
 
             System.out.println(e.getMessage());
             
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
         }
         return conn;
     }

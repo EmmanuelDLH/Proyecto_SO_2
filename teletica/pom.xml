@@ -17,6 +17,12 @@
 		<java.version>8</java.version>
 	</properties>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.34.0</version>
+		</dependency>
 		<dependency>     
 			<groupId>com.google.code.gson</groupId>     
 			<artifactId>gson</artifactId>     
