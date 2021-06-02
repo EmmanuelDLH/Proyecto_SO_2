@@ -41,14 +41,14 @@ public class topicConsumer {
         String ID = jsonObject.get("id").getAsString();
         String URL = jsonObject.get("news_url").getAsString();
 
-        if (NewsUtil.getHtmlDocument(URL).getElementById("content") == null){ //para cuando la pagina es incorrecta
+        if (NewsUtil.getHtmlDocument(URL).getElementsByClass("post-content container 404-page") != null){ //para cuando la pagina es incorrecta
             keyList.put("Events", eventsCountFinal);
             keyList.put("Health", healthCountFinal);
             keyList.put("Politics", politicsCountFinal);
             template.send("article_text", new Gson().toJson(new News(ID, keyList)));//There is no info o String vacio
         }
         else{
-            if(NewsUtil.getHtmlDocument(URL).getElementById("content").getElementsByClass("text-editor").isEmpty()){ //para cuando no encunetra la noticia
+            if(NewsUtil.getHtmlDocument(URL).getElementsByClass("post-content").isEmpty()){ //para cuando no encunetra la noticia
                 keyList.put("Events", eventsCountFinal);
                 keyList.put("Health", healthCountFinal);
                 keyList.put("Politics", politicsCountFinal);
@@ -56,7 +56,7 @@ public class topicConsumer {
             }
             else{
                 //con esto podemos ver cuantos parrafos podemos usar
-                Elements paragraphs = NewsUtil.getHtmlDocument(URL).getElementById("content").getElementsByClass("text-editor").get(0).getElementsByTag("p");
+                Elements paragraphs = NewsUtil.getHtmlDocument(URL).getElementsByClass("post-content").get(0).getElementsByTag("p");
                 int tamano = paragraphs.size();
                 System.out.println(tamano);
 
