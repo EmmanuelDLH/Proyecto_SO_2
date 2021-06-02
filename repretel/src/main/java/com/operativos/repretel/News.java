@@ -1,4 +1,4 @@
-package com.operativos.teletica;
+package com.operativos.repretel;
 
 import java.util.Dictionary;
 

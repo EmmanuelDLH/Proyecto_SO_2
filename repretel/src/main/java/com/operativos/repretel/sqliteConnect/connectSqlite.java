@@ -1,4 +1,4 @@
-package com.operativos.teletica.sqliteConnect;
+package com.operativos.repretel.sqliteConnect;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,14 +1,14 @@
-package com.operativos.teletica.consumer;
+package com.operativos.crhoy.consumer;
 
 import org.jsoup.select.Elements;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import com.operativos.teletica.News;
-import com.operativos.teletica.NewsUtil;
-import com.operativos.teletica.puller;
-import com.operativos.teletica.sqliteConnect.connectSqlite;
+import com.operativos.crhoy.News;
+import com.operativos.crhoy.NewsUtil;
+import com.operativos.crhoy.puller;
+import com.operativos.crhoy.sqliteConnect.connectSqlite;
 
 import java.sql.Connection;
 import java.util.Dictionary;
@@ -27,7 +27,7 @@ public class topicConsumer {
         this.template = template;
     }
 
-    @KafkaListener(topics = "myTopic", groupId = "teletica")
+    @KafkaListener(topics = "myTopic", groupId = "crhoy")
     public void listen(String message) {
 
         int eventsCountFinal = 0;

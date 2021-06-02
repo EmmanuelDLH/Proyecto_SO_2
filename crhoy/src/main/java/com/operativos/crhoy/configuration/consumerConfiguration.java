@@ -1,4 +1,4 @@
-package com.operativos.teletica.configuration;
+package com.operativos.crhoy.configuration;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Configuration
 public class consumerConfiguration {
     private static final String KAFKA_BROKER = "localhost:9092";
-    private static final String GROUP_ID = "teletica";
+    private static final String GROUP_ID = "crhoy";
 
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {

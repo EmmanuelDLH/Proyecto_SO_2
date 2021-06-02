@@ -1,4 +1,4 @@
-package com.operativos.teletica.configuration;
+package com.operativos.repretel.configuration;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

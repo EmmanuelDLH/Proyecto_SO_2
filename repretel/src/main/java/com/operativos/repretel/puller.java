@@ -1,4 +1,4 @@
-package com.operativos.teletica;
+package com.operativos.repretel;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import com.operativos.teletica.sqliteConnect.connectSqlite;
+import com.operativos.repretel.sqliteConnect.connectSqlite;
 
 //esta clase recibe el texto que se obtine mediante web scrapping y extrae las palabras clave que se asemejan a las de la DB
 public class puller{

@@ -1,4 +1,4 @@
-package com.operativos.teletica;
+package com.operativos.crhoy;
 
 import java.io.IOException;
 import org.jsoup.Jsoup;
@@ -27,10 +27,10 @@ public class NewsUtil {
     public static String getPropertyUrl(int index) {
 		String contain = null;
         if (index == 0) {
-            contain = "https://www.teletica.com/nacional/trenes-nuevos-hacen-primer-viaje-entre-san-jose-heredia-y-alajuela_286526";
+            contain = "";
         }
         else if (index == 1){
-            contain = "https://www.teletica.com/nacional/secretario-de-estado-de-eeuu-visitara-costa-rica-el-proximo-martes_286538";
+            contain = "";
         }
         return contain;
     }
