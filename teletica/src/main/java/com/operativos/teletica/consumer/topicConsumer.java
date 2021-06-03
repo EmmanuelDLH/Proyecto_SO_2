@@ -33,6 +33,9 @@ public class topicConsumer {
         int eventsCountFinal = 0;
         int healthCountFinal = 0;
         int politicsCountFinal = 0;
+        int sportsCountFinal = 0;
+        int economyCountFinal = 0;
+        int entertainmentCountFinal = 0;
         
         Dictionary<String, Integer> keyList = new Hashtable<String, Integer>();
 
@@ -45,6 +48,9 @@ public class topicConsumer {
             keyList.put("Events", eventsCountFinal);
             keyList.put("Health", healthCountFinal);
             keyList.put("Politics", politicsCountFinal);
+            keyList.put("Sports", sportsCountFinal);
+            keyList.put("Economy", economyCountFinal);
+            keyList.put("Entertainment", entertainmentCountFinal);
             template.send("article_text", new Gson().toJson(new News(ID, keyList)));//There is no info o String vacio
         }
         else{
@@ -52,6 +58,9 @@ public class topicConsumer {
                 keyList.put("Events", eventsCountFinal);
                 keyList.put("Health", healthCountFinal);
                 keyList.put("Politics", politicsCountFinal);
+                keyList.put("Sports", sportsCountFinal);
+                keyList.put("Economy", economyCountFinal);
+                keyList.put("Entertainment", entertainmentCountFinal);
                 template.send("article_text", new Gson().toJson(new News(ID, keyList)));//There is no info o String vacio
             }
             else{
@@ -72,6 +81,9 @@ public class topicConsumer {
                             eventsCountFinal += puller.puller_methodEvents(textExtract, c);
                             healthCountFinal += puller.puller_methodHealth(textExtract, c);
                             politicsCountFinal += puller.puller_methodPolitics(textExtract, c);
+                            sportsCountFinal += puller.puller_methodSports(textExtract, c);
+                            economyCountFinal += puller.puller_methodEconomy(textExtract, c);
+                            entertainmentCountFinal += puller.puller_methodEntertainment(textExtract, c);
 
                         } catch (Exception e) {
                             //TODO: handle exception
@@ -84,6 +96,9 @@ public class topicConsumer {
                         keyList.put("Events", eventsCountFinal);
                         keyList.put("Health", healthCountFinal);
                         keyList.put("Politics", politicsCountFinal);
+                        keyList.put("Sports", sportsCountFinal);
+                        keyList.put("Economy", economyCountFinal);
+                        keyList.put("Entertainment", entertainmentCountFinal);
 
                         template.send("article_text", new Gson().toJson(new News(ID, keyList)));//article_text
 

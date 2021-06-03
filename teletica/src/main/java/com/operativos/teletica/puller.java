@@ -108,4 +108,94 @@ public class puller{
             return totalCount = 0;
         }
     }
+
+    public static int puller_methodSports(String newsText, Connection c) {
+        int totalCount = 0;
+        Statement stmt = null;
+        
+        try {
+
+            c = connectSqlite.connect();
+
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Sports;" );
+            
+            while ( rs.next() ) {
+                //int id = rs.getInt("ID");
+                String  word = rs.getString("Word");
+
+                totalCount += nroVecesR(newsText, word);
+                
+            }
+            rs.close();
+            stmt.close();
+
+            return totalCount;
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+            System.err.println("Error del puller_methodSports: " + e);
+            return totalCount = 0;
+        }
+    }
+
+    public static int puller_methodEconomy(String newsText, Connection c) {
+        int totalCount = 0;
+        Statement stmt = null;
+        
+        try {
+
+            c = connectSqlite.connect();
+
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Economy;" );
+            
+            while ( rs.next() ) {
+                //int id = rs.getInt("ID");
+                String  word = rs.getString("Word");
+
+                totalCount += nroVecesR(newsText, word);
+                
+            }
+            rs.close();
+            stmt.close();
+
+            return totalCount;
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+            System.err.println("Error del puller_methodEconomy: " + e);
+            return totalCount = 0;
+        }
+    }
+
+    public static int puller_methodEntertainment(String newsText, Connection c) {
+        int totalCount = 0;
+        Statement stmt = null;
+        
+        try {
+
+            c = connectSqlite.connect();
+
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Entertainment;" );
+            
+            while ( rs.next() ) {
+                //int id = rs.getInt("ID");
+                String  word = rs.getString("Word");
+
+                totalCount += nroVecesR(newsText, word);
+                
+            }
+            rs.close();
+            stmt.close();
+
+            return totalCount;
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+            System.err.println("Error del puller_methodEntertainment: " + e);
+            return totalCount = 0;
+        }
+    }
 }
