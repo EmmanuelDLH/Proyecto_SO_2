@@ -34,6 +34,7 @@ public class puller{
 
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM Events;" );
+            System.out.println("Resultados de las tablas events " + rs.toString());
             
             while ( rs.next() ) {
                 String  word = rs.getString("Word");

@@ -1,59 +1,34 @@
 package com.operativos.teletica;
 
-import java.util.Dictionary;
-
 public class News{
 
-    private String id;
-    private String text;
+    private String title;
     private String news_url;
-    private Dictionary<String, Integer> keyWordsList;
+    private String keyWordsList;
 
     public News() {
         super(); 
     }
 
-    public News(String id, String text){
+    public News(String title, String news_url, String keyWordsList) {
         super();
-        this.id = id;
-        this.text = text;
-    }
-
-    public News(String id, String text, Dictionary<String, Integer> keyWordsList){
-        super();
-        this.id = id;
-        this.text = text;
-        this.keyWordsList = keyWordsList;
-    }
-
-    public News(String id, String text, String news_url, Dictionary<String, Integer> keyWordsList) {
-        super();
-        this.id = id;
-        this.text = text;
+        this.title = title;
         this.news_url = news_url;
         this.keyWordsList = keyWordsList;
     }
 
-    public News(String id, Dictionary<String, Integer> keyWordsList) {
+    public News(String title, String keyWordsList) {
         super();
-        this.id = id;
+        this.title = title;
         this.keyWordsList = keyWordsList;
     }
 
-    public String getId() {
-        return id;
+    public String gettitle() {
+        return title;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void settitle(String title) {
+        this.title = title;
     }
 
     public String getNews_url() {
@@ -64,11 +39,11 @@ public class News{
         this.news_url = news_url;
     }
 
-    public Dictionary<String, Integer> getKeyWordsList() {
+    public String getKeyWordsList() {
         return keyWordsList;
     }
 
-    public void setKeyWordsList(Dictionary<String, Integer> keyWordsList) {
+    public void setKeyWordsList(String keyWordsList) {
         this.keyWordsList = keyWordsList;
     }
     

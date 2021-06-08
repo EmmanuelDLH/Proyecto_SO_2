@@ -27,10 +27,8 @@ public class topicConsumer {
         this.template = template;
     }
 
-    @KafkaListener(topics = "myTopic", groupId = "diarioextra")
+    @KafkaListener(topics = "newsdiarioextra", groupId = "diarioextra")
     public void listen(String message) {
-
-        //*[@id="container"]/main/div[1]/article
 
         int eventsCountFinal = 0;
         int healthCountFinal = 0;
@@ -43,7 +41,7 @@ public class topicConsumer {
 
         JsonObject jsonObject = new JsonParser().parse(message).getAsJsonObject();
     
-        String ID = jsonObject.get("id").getAsString();
+        String title = "";
         String URL = jsonObject.get("news_url").getAsString();
 
         if (NewsUtil.getHtmlDocument(URL).getElementById("container") == null){ //para cuando la pagina es incorrecta
@@ -53,7 +51,7 @@ public class topicConsumer {
             keyList.put("Sports", sportsCountFinal);
             keyList.put("Economy", economyCountFinal);
             keyList.put("Entertainment", entertainmentCountFinal);
-            template.send("article_text", new Gson().toJson(new News(ID, keyList)));//There is no info o String vacio
+            template.send("article_text", new Gson().toJson(new News(title, keyList)));//There is no info o String vacio
         }
         else{
             if(NewsUtil.getHtmlDocument(URL).getElementById("container").getElementsByTag("article").isEmpty()){ //para cuando no encunetra la noticia
@@ -63,11 +61,12 @@ public class topicConsumer {
                 keyList.put("Sports", sportsCountFinal);
                 keyList.put("Economy", economyCountFinal);
                 keyList.put("Entertainment", entertainmentCountFinal);
-                template.send("article_text", new Gson().toJson(new News(ID, keyList)));//There is no info o String vacio
+                template.send("article_text", new Gson().toJson(new News(title, keyList)));//There is no info o String vacio
             }
             else{
                 //con esto podemos ver cuantos parrafos podemos usar
                 Elements paragraphs = NewsUtil.getHtmlDocument(URL).getElementById("container").getElementsByTag("article").get(0).getElementsByTag("p");
+                title = NewsUtil.getHtmlDocument(URL).getElementById("container").getElementsByTag("figcaption").get(0).getElementsByTag("h1").first().text();
                 int tamano = paragraphs.size();
                 System.out.println(tamano);
 
@@ -102,7 +101,7 @@ public class topicConsumer {
                         keyList.put("Economy", economyCountFinal);
                         keyList.put("Entertainment", entertainmentCountFinal);
 
-                        template.send("article_text", new Gson().toJson(new News(ID, keyList)));//article_text
+                        template.send("article_text", new Gson().toJson(new News(title, keyList)));//article_text
 
                     } catch (Exception e) {
                         //TODO: handle exception

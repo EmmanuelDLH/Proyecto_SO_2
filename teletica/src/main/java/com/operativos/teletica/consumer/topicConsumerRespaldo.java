@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import com.operativos.teletica.News;
 import com.operativos.teletica.NewsUtil;
 import com.operativos.teletica.puller;
-import com.operativos.teletica.puller2;
-import com.operativos.teletica.getconsume.GetRequest;
 import com.operativos.teletica.sqliteConnect.connectSqlite;
 
 import java.sql.Connection;
@@ -19,11 +17,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 @Component
-public class topicConsumer {
+public class topicConsumerRespaldo {
     
     private KafkaTemplate<String, String> template;
 
-    public topicConsumer (KafkaTemplate<String, String> template){
+    public topicConsumerRespaldo (KafkaTemplate<String, String> template){
         this.template = template;
     }
 
@@ -68,29 +66,49 @@ public class topicConsumer {
                 title = NewsUtil.getHtmlDocument(URL).getElementById("content").getElementsByTag("h1").first().text();
                 int tamano = paragraphs.size();
 
-                //hacemos la llamada al request para obtener las palabras
-                GetRequest.request();
-                
-                for (int i = 0; i < tamano - 1; i++) {
+                Connection c = null;
+
+                try {
+                    c = connectSqlite.connect();
+
+                    for (int i = 0; i < tamano - 1; i++) {
+                        try {
+
+                            String textExtract = paragraphs.get(i).ownText();
+                            //System.out.println(textExtract);
+
+                            eventsCountFinal += puller.puller_methodEvents(textExtract, c);
+                            healthCountFinal += puller.puller_methodHealth(textExtract, c);
+                            politicsCountFinal += puller.puller_methodPolitics(textExtract, c);
+                            sportsCountFinal += puller.puller_methodSports(textExtract, c);
+                            economyCountFinal += puller.puller_methodEconomy(textExtract, c);
+                            entertainmentCountFinal += puller.puller_methodEntertainment(textExtract, c);
+
+                        } catch (Exception e) {
+                            //TODO: handle exception
+                            System.err.println(e.getMessage());
+                        }
+                    }
+                    String stringValueofKeyList = "{Politics: " + politicsCountFinal + ", "
+                        + "Events: " + eventsCountFinal + ", "
+                        + "Entertainment: " + entertainmentCountFinal + ", "
+                        + "Sports: " + sportsCountFinal + ", "
+                        + "Health: " + healthCountFinal + ", "
+                        + "Economy: " + economyCountFinal + "}";
+                    template.send("article_text", new Gson().toJson(new News(title, stringValueofKeyList)));//article_text
                     
-                    String textExtract = paragraphs.get(i).ownText();
-                    
-                    eventsCountFinal += puller2.puller_methodEvents(textExtract);
-                    healthCountFinal += puller2.puller_methodHealth(textExtract);
-                    politicsCountFinal += puller2.puller_methodPolitics(textExtract);
-                    sportsCountFinal += puller2.puller_methodSports(textExtract);
-                    economyCountFinal += puller2.puller_methodEconomy(textExtract);
-                    entertainmentCountFinal += puller2.puller_methodEntertainment(textExtract);
+                } catch (Exception e) {
+                    //TODO: handle exception
+
+                }finally {
+                    try {
+                        if (c != null) {
+                            c.close();
+                        }
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
                 }
-
-                String stringValueofKeyList = "{Politics: " + politicsCountFinal + ", "
-                    + "Events: " + eventsCountFinal + ", "
-                    + "Entertainment: " + entertainmentCountFinal + ", "
-                    + "Sports: " + sportsCountFinal + ", "
-                    + "Health: " + healthCountFinal + ", "
-                    + "Economy: " + economyCountFinal + "}";
-
-                template.send("article_text", new Gson().toJson(new News(title, stringValueofKeyList)));
             }
         }
     }
