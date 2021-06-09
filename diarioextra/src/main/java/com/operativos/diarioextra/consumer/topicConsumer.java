@@ -7,12 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.operativos.diarioextra.News;
 import com.operativos.diarioextra.NewsUtil;
-import com.operativos.diarioextra.puller;
-import com.operativos.diarioextra.sqliteConnect.connectSqlite;
-
-import java.sql.Connection;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import com.operativos.diarioextra.puller2;
+import com.operativos.diarioextra.getconsume.GetRequest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -36,91 +32,63 @@ public class topicConsumer {
         int sportsCountFinal = 0;
         int economyCountFinal = 0;
         int entertainmentCountFinal = 0;
-        
-        Dictionary<String, Integer> keyList = new Hashtable<String, Integer>();
 
         JsonObject jsonObject = new JsonParser().parse(message).getAsJsonObject();
-    
-        String title = "";
-        String URL = jsonObject.get("news_url").getAsString();
 
-        if (NewsUtil.getHtmlDocument(URL).getElementById("container") == null){ //para cuando la pagina es incorrecta
-            keyList.put("Events", eventsCountFinal);
-            keyList.put("Health", healthCountFinal);
-            keyList.put("Politics", politicsCountFinal);
-            keyList.put("Sports", sportsCountFinal);
-            keyList.put("Economy", economyCountFinal);
-            keyList.put("Entertainment", entertainmentCountFinal);
-            template.send("article_text", new Gson().toJson(new News(title, keyList)));//There is no info o String vacio
+        String URL = jsonObject.get("news_url").getAsString();
+        String title = "";
+
+        if (NewsUtil.getHtmlDocument(URL).getElementById("content") == null){ //para cuando la pagina es incorrecta
+            String stringValueofKeyList = "{Politics: " + politicsCountFinal + ", "
+                        + "Events: " + eventsCountFinal + ", "
+                        + "Entertainment: " + entertainmentCountFinal + ", "
+                        + "Sports: " + sportsCountFinal + ", "
+                        + "Health: " + healthCountFinal + ", "
+                        + "Economy: " + economyCountFinal + "}";
+            template.send("article_text", new Gson().toJson(new News(title, stringValueofKeyList)));//There is no info o String vacio
         }
         else{
-            if(NewsUtil.getHtmlDocument(URL).getElementById("container").getElementsByTag("article").isEmpty()){ //para cuando no encunetra la noticia
-                keyList.put("Events", eventsCountFinal);
-                keyList.put("Health", healthCountFinal);
-                keyList.put("Politics", politicsCountFinal);
-                keyList.put("Sports", sportsCountFinal);
-                keyList.put("Economy", economyCountFinal);
-                keyList.put("Entertainment", entertainmentCountFinal);
-                template.send("article_text", new Gson().toJson(new News(title, keyList)));//There is no info o String vacio
+            if(NewsUtil.getHtmlDocument(URL).getElementById("content").getElementsByClass("text-editor").isEmpty()){ //para cuando no encunetra la noticia
+                String stringValueofKeyList = "{Politics: " + politicsCountFinal + ", "
+                        + "Events: " + eventsCountFinal + ", "
+                        + "Entertainment: " + entertainmentCountFinal + ", "
+                        + "Sports: " + sportsCountFinal + ", "
+                        + "Health: " + healthCountFinal + ", "
+                        + "Economy: " + economyCountFinal + "}";
+                
+                template.send("article_text", new Gson().toJson(new News(title, stringValueofKeyList)));//There is no info o String vacio
             }
             else{
                 //con esto podemos ver cuantos parrafos podemos usar
                 Elements paragraphs = NewsUtil.getHtmlDocument(URL).getElementById("container").getElementsByTag("article").get(0).getElementsByTag("p");
                 title = NewsUtil.getHtmlDocument(URL).getElementById("container").getElementsByTag("figcaption").get(0).getElementsByTag("h1").first().text();
                 int tamano = paragraphs.size();
-                System.out.println(tamano);
 
-                Connection c = null;
-
-                try {
-                    c = connectSqlite.connect();
-
-                    for (int i = 0; i < tamano - 1; i++) {
-                        try {
-
-                            String textExtract = paragraphs.get(i).ownText();
-                            eventsCountFinal += puller.puller_methodEvents(textExtract, c);
-                            healthCountFinal += puller.puller_methodHealth(textExtract, c);
-                            politicsCountFinal += puller.puller_methodPolitics(textExtract, c);
-                            sportsCountFinal += puller.puller_methodSports(textExtract, c);
-                            economyCountFinal += puller.puller_methodEconomy(textExtract, c);
-                            entertainmentCountFinal += puller.puller_methodEntertainment(textExtract, c);
-
-                        } catch (Exception e) {
-                            //TODO: handle exception
-                            System.err.println(e.getMessage());
-                        }
-                    }
-
-                    try {
-
-                        keyList.put("Events", eventsCountFinal);
-                        keyList.put("Health", healthCountFinal);
-                        keyList.put("Politics", politicsCountFinal);
-                        keyList.put("Sports", sportsCountFinal);
-                        keyList.put("Economy", economyCountFinal);
-                        keyList.put("Entertainment", entertainmentCountFinal);
-
-                        template.send("article_text", new Gson().toJson(new News(title, keyList)));//article_text
-
-                    } catch (Exception e) {
-                        //TODO: handle exception
-                        System.err.println("excepcion a la hora de cargar el json final");
-                    }
+                //hacemos la llamada al request para obtener las palabras
+                GetRequest.request();
+                
+                for (int i = 0; i < tamano - 1; i++) {
                     
-                } catch (Exception e) {
-                    //TODO: handle exception
-
-                }finally {
-                    try {
-                        if (c != null) {
-                            c.close();
-                        }
-                    } catch (Exception ex) {
-                        System.out.println(ex.getMessage());
-                    }
+                    String textExtract = paragraphs.get(i).ownText();
+                    
+                    eventsCountFinal += puller2.puller_methodEvents(textExtract);
+                    healthCountFinal += puller2.puller_methodHealth(textExtract);
+                    politicsCountFinal += puller2.puller_methodPolitics(textExtract);
+                    sportsCountFinal += puller2.puller_methodSports(textExtract);
+                    economyCountFinal += puller2.puller_methodEconomy(textExtract);
+                    entertainmentCountFinal += puller2.puller_methodEntertainment(textExtract);
                 }
+
+                String stringValueofKeyList = "{Politics: " + politicsCountFinal + ", "
+                    + "Events: " + eventsCountFinal + ", "
+                    + "Entertainment: " + entertainmentCountFinal + ", "
+                    + "Sports: " + sportsCountFinal + ", "
+                    + "Health: " + healthCountFinal + ", "
+                    + "Economy: " + economyCountFinal + "}";
+
+                template.send("article_text", new Gson().toJson(new News(title, stringValueofKeyList)));
             }
         }
     }
+
 }

@@ -1,40 +1,23 @@
 package com.operativos.repretel;
 
-import java.util.Dictionary;
-
 public class News{
 
     private String title;
-    private String text;
     private String news_url;
-    private Dictionary<String, Integer> keyWordsList;
+    private String keyWordsList;
 
     public News() {
         super(); 
     }
 
-    public News(String title, String text){
+    public News(String title, String news_url, String keyWordsList) {
         super();
         this.title = title;
-        this.text = text;
-    }
-
-    public News(String title, String text, Dictionary<String, Integer> keyWordsList){
-        super();
-        this.title = title;
-        this.text = text;
-        this.keyWordsList = keyWordsList;
-    }
-
-    public News(String title, String text, String news_url, Dictionary<String, Integer> keyWordsList) {
-        super();
-        this.title = title;
-        this.text = text;
         this.news_url = news_url;
         this.keyWordsList = keyWordsList;
     }
 
-    public News(String title, Dictionary<String, Integer> keyWordsList) {
+    public News(String title, String keyWordsList) {
         super();
         this.title = title;
         this.keyWordsList = keyWordsList;
@@ -48,14 +31,6 @@ public class News{
         this.title = title;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public String getNews_url() {
         return news_url;
     }
@@ -64,11 +39,11 @@ public class News{
         this.news_url = news_url;
     }
 
-    public Dictionary<String, Integer> getKeyWordsList() {
+    public String getKeyWordsList() {
         return keyWordsList;
     }
 
-    public void setKeyWordsList(Dictionary<String, Integer> keyWordsList) {
+    public void setKeyWordsList(String keyWordsList) {
         this.keyWordsList = keyWordsList;
     }
     

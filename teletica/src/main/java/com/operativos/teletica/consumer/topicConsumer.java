@@ -7,12 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.operativos.teletica.News;
 import com.operativos.teletica.NewsUtil;
-import com.operativos.teletica.puller;
 import com.operativos.teletica.puller2;
 import com.operativos.teletica.getconsume.GetRequest;
-import com.operativos.teletica.sqliteConnect.connectSqlite;
-
-import java.sql.Connection;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
