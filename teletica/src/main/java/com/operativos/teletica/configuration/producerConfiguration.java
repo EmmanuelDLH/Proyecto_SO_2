@@ -11,6 +11,8 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.operativos.teletica.getconsume.GetRequest;
+
 @Configuration
 public class producerConfiguration {
     
@@ -18,6 +20,7 @@ public class producerConfiguration {
 
     @Bean
     public ProducerFactory<String, String> producerFactory() {
+        GetRequest.request();
         return new DefaultKafkaProducerFactory<>(producerConfigurations());
     }
 

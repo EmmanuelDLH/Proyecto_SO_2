@@ -3,70 +3,79 @@ package com.operativos.crhoy.getconsume;
 import java.util.ArrayList;
 
 public class DictionaryDB {
-    ArrayList<String> Deportes = new ArrayList<String>();
-    ArrayList<String> Economia = new ArrayList<String>();
-    ArrayList<String> Entretenimiento = new ArrayList<String>();
-    ArrayList<String> Eventos = new ArrayList<String>();
-    ArrayList<String> Politica = new ArrayList<String>();
-    ArrayList<String> Salud = new ArrayList<String>();
-    
-    public DictionaryDB(ArrayList<String> deportes, ArrayList<String> economia, ArrayList<String> entretenimiento,
-            ArrayList<String> eventos, ArrayList<String> politica, ArrayList<String> salud) {
-        Deportes = deportes;
-        Economia = economia;
-        Entretenimiento = entretenimiento;
-        Eventos = eventos;
-        Politica = politica;
-        Salud = salud;
+    ArrayList<String> sports;
+    ArrayList<String> economy;
+    ArrayList<String> entertainment;
+    ArrayList<String> events;
+    ArrayList<String> politics;
+    ArrayList<String> health;
+
+    public DictionaryDB() {
+        super();
     }
 
-    public ArrayList<String> getDeportes() {
-        return Deportes;
+    public DictionaryDB(ArrayList<String> sports, ArrayList<String> economy, ArrayList<String> entertainment,
+            ArrayList<String> events, ArrayList<String> politics, ArrayList<String> health) {
+                super();
+        this.sports = sports;
+        this.economy = economy;
+        this.entertainment = entertainment;
+        this.events = events;
+        this.politics = politics;
+        this.health = health;
     }
 
-    public void setDeportes(ArrayList<String> deportes) {
-        Deportes = deportes;
+    public ArrayList<String> getsports() {
+        return sports;
     }
 
-    public ArrayList<String> getEconomia() {
-        return Economia;
+    public void setsports(ArrayList<String> sports) {
+        this.sports = sports;
     }
 
-    public void setEconomia(ArrayList<String> economia) {
-        Economia = economia;
+    public ArrayList<String> geteconomy() {
+        return economy;
     }
 
-    public ArrayList<String> getEntretenimiento() {
-        return Entretenimiento;
+    public void seteconomy(ArrayList<String> economy) {
+        this.economy = economy;
     }
 
-    public void setEntretenimiento(ArrayList<String> entretenimiento) {
-        Entretenimiento = entretenimiento;
+    public ArrayList<String> getentertainment() {
+        return entertainment;
     }
 
-    public ArrayList<String> getEventos() {
-        return Eventos;
+    public void setentertainment(ArrayList<String> entertainment) {
+        this.entertainment = entertainment;
     }
 
-    public void setEventos(ArrayList<String> eventos) {
-        Eventos = eventos;
+    public ArrayList<String> getevents() {
+        return events;
     }
 
-    public ArrayList<String> getPolitica() {
-        return Politica;
+    public void setevents(ArrayList<String> events) {
+        this.events = events;
     }
 
-    public void setPolitica(ArrayList<String> politica) {
-        Politica = politica;
+    public ArrayList<String> getpolitics() {
+        return politics;
     }
 
-    public ArrayList<String> getSalud() {
-        return Salud;
+    public void setpolitics(ArrayList<String> politics) {
+        this.politics = politics;
     }
 
-    public void setSalud(ArrayList<String> salud) {
-        Salud = salud;
+    public ArrayList<String> gethealth() {
+        return health;
     }
 
-    
+    public void sethealth(ArrayList<String> health) {
+        this.health = health;
+    }
+
+    @Override
+    public String toString() {
+        return "DictionaryDB [economy=" + economy + ", entertainment=" + entertainment + ", events=" + events
+                + ", health=" + health + ", politics=" + politics + ", sports=" + sports + "]";
+    }
 }

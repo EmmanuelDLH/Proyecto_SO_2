@@ -16,7 +16,7 @@ public class GetRequest {
         URL url;
 
         try {
-            url = new URL("https://jsonplaceholder.typicode.com/todos/1");
+            url = new URL("https://9daf7b8ebe33.ngrok.io/getDictionaryTokens");
 
             // Open a connection(?) on the URL(?) and cast the response(??)
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -38,8 +38,9 @@ public class GetRequest {
 
     }
 
-    /*public static void main(String[] args) throws IOException {
+    /*public static void main(String[] args){
         request();
+        System.out.println(db.toString());
     }*/
 
 }

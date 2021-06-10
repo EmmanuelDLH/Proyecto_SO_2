@@ -45,7 +45,7 @@ public class topicConsumer {
                         + "Sports: " + sportsCountFinal + ", "
                         + "Health: " + healthCountFinal + ", "
                         + "Economy: " + economyCountFinal + "}";
-            template.send("article_text", new Gson().toJson(new News(title, stringValueofKeyList)));//There is no info o String vacio
+            template.send("article_text", new Gson().toJson(new News(title, URL, stringValueofKeyList)));//There is no info o String vacio
         }
         else{
             if(NewsUtil.getHtmlDocument(URL).getElementById("content").getElementsByClass("text-editor").isEmpty()){ //para cuando no encunetra la noticia
@@ -56,7 +56,7 @@ public class topicConsumer {
                         + "Health: " + healthCountFinal + ", "
                         + "Economy: " + economyCountFinal + "}";
                 
-                template.send("article_text", new Gson().toJson(new News(title, stringValueofKeyList)));//There is no info o String vacio
+                template.send("article_text", new Gson().toJson(new News(title, URL, stringValueofKeyList)));//There is no info o String vacio
             }
             else{
                 //con esto podemos ver cuantos parrafos podemos usar
@@ -86,7 +86,7 @@ public class topicConsumer {
                     + "Health: " + healthCountFinal + ", "
                     + "Economy: " + economyCountFinal + "}";
 
-                template.send("article_text", new Gson().toJson(new News(title, stringValueofKeyList)));
+                template.send("article_text", new Gson().toJson(new News(title, URL, stringValueofKeyList)));
             }
         }
     }
