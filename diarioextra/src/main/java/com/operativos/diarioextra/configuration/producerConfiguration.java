@@ -11,13 +11,16 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.operativos.diarioextra.getconsume.GetRequest;
+
 @Configuration
 public class producerConfiguration {
     
-    private static final String KAFKA_BROKER = "localhost:9092";
+    private static final String KAFKA_BROKER = "4.tcp.ngrok.io:18881";
 
     @Bean
     public ProducerFactory<String, String> producerFactory() {
+        GetRequest.request();
         return new DefaultKafkaProducerFactory<>(producerConfigurations());
     }
 

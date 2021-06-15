@@ -16,7 +16,7 @@ public class GetRequest {
         URL url;
 
         try {
-            url = new URL("https://9daf7b8ebe33.ngrok.io/getDictionaryTokens");
+            url = new URL("https://1a515d27f6c8.ngrok.io/getDictionaryTokens");
 
             // Open a connection(?) on the URL(?) and cast the response(??)
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -30,6 +30,7 @@ public class GetRequest {
 
             // Finally we have the response
             //System.out.println(responseStream);
+            System.out.println(db.toString());
 
         } catch (Exception e) {
             // TODO Auto-generated catch block

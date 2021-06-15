@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Configuration
 public class consumerConfiguration {
-    private static final String KAFKA_BROKER = "localhost:9092";
+    private static final String KAFKA_BROKER = "4.tcp.ngrok.io:18881";
     private static final String GROUP_ID = "crhoy";
 
     @Bean

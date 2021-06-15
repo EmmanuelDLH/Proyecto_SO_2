@@ -16,7 +16,7 @@ import com.operativos.teletica.getconsume.GetRequest;
 @Configuration
 public class producerConfiguration {
     
-    private static final String KAFKA_BROKER = "localhost:9092";
+    private static final String KAFKA_BROKER = "4.tcp.ngrok.io:18881";
 
     @Bean
     public ProducerFactory<String, String> producerFactory() {
